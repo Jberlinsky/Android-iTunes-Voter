@@ -39,6 +39,13 @@
             .info span {
                 display: block;    
             }
+             img {
+                float: left;
+                margin-right: 10px;
+                margin-left : 5px;
+                margin-top: 5px;
+                border: 1px solid #7e7e7e;
+            }
 
             .status {
                 float: right;
@@ -82,6 +89,8 @@
 			{% for song in songs %}
 				{% block song %}
 				<li>
+                    <img src="{{ song.imgurl() }}" height="50" width="50" />
+                    <span class="img" style="display: none; visibility: hidden;">{{ song.imgurl() }}</span>
                     <div class="status">
                         {% if song.playing %}
                             <span style="font-style: italic">Now playing</span>
@@ -93,8 +102,8 @@
                         <span class="playing" style="display: none; visiblility:hidden;">{{ song.playing }}</span>
                     </div>
                     <div class="info">
-                    {% if len(song.name) > 40 %}
-                        <span class="name" >{{ song.name[0:37] }}...</span>
+                    {% if len(song.name) > 35 %}
+                        <span class="name" >{{ song.name[0:32] }}...</span>
                     {% else %}
                         <span class="name">{{ song.name }}</span>
                     {% end %}
@@ -109,11 +118,44 @@
         </div>
 		<script type="text/javascript" src="https://raw.github.com/javve/list/master/list.min.js"></script>
         <script type="text/javascript">
+            var Observer = function(val) {
+                this.item = val;
+                this.listeners = [];
+                this.size = 0;
+                return this;
+            }
+            Observer.prototype = {
+                subscribe: function (fn) {
+                    this.listeners.push(fn);    
+                },
+                val: function(vals, thisObj) {
+                    if (!vals) {
+                        return this.item;    
+                    }
+                    var scope = thisObj || window;
+                    if (vals != this.item) {
+                        this.item = vals;
+                        this.listeners.forEach(function(el){
+                            el.call(scope, vals); 
+                        });   
+                    }
+                }
+                
+            }
+            var views = ["default", "queued", "artists", "albums", "songs", "artists_albums", "artist_songs", "album_songs"];
+            var view = new Observer(views[0]);
             var options = {
                 valueNames: ["votes", "playing", "name", "artist", "album", "id"]  
             };
 
             var songList = new List('song_list', options);
+
+            songList.filter(function(vals){
+                if (vals.votes > 0) {
+                    return true;    
+                }
+                return false;
+            });
 
 			</script>
         </body>

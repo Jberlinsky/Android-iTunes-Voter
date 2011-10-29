@@ -12,7 +12,7 @@ import json
 from json import JSONEncoder
 import select
 import urllib
-from lxml import etree
+#from lxml import etree
 
 COVER_ART_URL = "http://www.freecovers.net/api/search/%s %s"
 
@@ -100,11 +100,12 @@ class Song:
     def play(self):
         self.obj.play()
 
-    def imgurl():
+    def imgurl(self):
         # Lazy load from an API
         url = COVER_ART_URL % (self.album, self.name)
-        tree = etree.parse(urllib.urlopen(url))
-        return tree.xpath("/rsp/title/covers/cover[type='front']/url")[0].text
+        #tree = etree.parse(urllib.urlopen(url))
+        return "http://placehold.it/50x50"
+# tree.xpath("/rsp/title/covers/cover[type='front']/url")[0].text
 
     def __repr__(self):
         dictionary = {}

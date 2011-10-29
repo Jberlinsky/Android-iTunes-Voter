@@ -74,7 +74,7 @@ class VoteHandler(cyclone.web.RequestHandler):
             for song in songs:
                 if song.id == sid:
                     song.votes += 1
-        self.render("vote.html", songs=songs)
+                    self.write(song.votes)
 
 class VotedOnApiHandler(cyclone.web.RequestHandler):
     def get(self):

@@ -10,6 +10,8 @@ import unicodedata
 import struct
 import json
 from json import JSONEncoder
+import select
+import pybonjour
 
 def songs_with_votes(songs):
     results = []
@@ -94,7 +96,17 @@ class Application(cyclone.web.Application):
 
         cyclone.web.Application.__init__(self, handlers, **settings)
 
+def register_callback(sdRef, flags, errorCode, name, regtype, domain):
+    if errorCode == pybonjour.kDNSServiceErr_NoError:
+        print "Successfully registered as a Bonjour service!"
+
 if __name__ == "__main__":
+    # Register as a Bonjour service
+    sdRef = pybonjour.DNSServiceRegister(name="",
+                                        regtype="_test._tcp",
+                                        port=1092,
+                                        callBack=register_callback)
+
     itunes = app('itunes')
 
     r = redis.StrictRedis(host='localhost', port=6379, db=0)

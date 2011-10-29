@@ -1,6 +1,9 @@
 <html>
 	<head>
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+		<script type="text/javascript" src="https://raw.github.com/jyoungblood/smoke.js/master/smoke/smoke.min.js"></script>
+        <link href="https://raw.github.com/jyoungblood/smoke.js/master/base.css" rel="stylesheet" type="text/css" />
+        <link href="https://raw.github.com/jyoungblood/smoke.js/master/smoke/smoke.css" rel="stylesheet" type="text/css" />
             <style>
             body {
                 color: white;
@@ -19,6 +22,9 @@
             } 
             ul {
                 list-style: none;    
+            }
+            .o_name {
+                display: none;    
             }
             li {
                 background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#68707e), color-stop(100%,#363b42)); /* Chrome,Safari4+ */
@@ -143,14 +149,15 @@
                         <span class="playing" style="display: none; visiblility:hidden;">{{ song.playing }}</span>
                     </div>
                     <div class="info">
-                    {% if len(song.name) > 35 %}
-                        <span class="name" >{{ song.name[0:32] }}...</span>
-                    {% else %}
-                        <span class="name">{{ song.name }}</span>
-                    {% end %}
-                    <span class="artist">{{ song.artist }}</span>
-                    <span class="album">{{ song.album }}</span>
+                        {% if len(song.name) > 35 %}
+                            <span class="name" >{{ song.name[0:32] }}...</span>
+                        {% else %}
+                            <span class="name">{{ song.name }}</span>
+                        {% end %}
+                        <span class="artist">{{ song.artist }}</span>
+                        <span class="album">{{ song.album }}</span>
                     </div>
+                    <span class="o_name">{{ song.name }}</span>
                     <span class="id">{{ song.id }}</span>
                 </li>
 				{% end %}
@@ -229,7 +236,20 @@
                 
                 $('#song_list').fadeIn();
             });
-        
+    
+
+            $('li').click(function() {
+                var $t = $(this);
+                var n = $t.children('.o_name').text();
+                var id = $t.children('.id').text();
+                smoke.confirm("Do you want to vote for " + n + "?", function(e) {
+                    if (e) {
+                        $.post('/vote', {"song_list": id}, function(){
+                            smoke.signal("Voted for " + n);    
+                        });
+                    }
+                });
+            });
 
 			</script>
         </body>

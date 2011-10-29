@@ -68,6 +68,7 @@ class VoteHandler(cyclone.web.RequestHandler):
         self.render("vote.html", songs=songs)
 
     def post(self):
+        wrote = False
         sid = unicodedata.normalize('NFKD',
                 self.get_argument("song_list")).encode('ascii', 'ignore')
         if sid is not '':
@@ -75,7 +76,9 @@ class VoteHandler(cyclone.web.RequestHandler):
                 if song.id == int(sid):
                     song.votes += 1
                     self.write(str(song.votes))
-        self.write("-1")
+                    wrote = True
+        if not wrote:
+            self.write("-1")
 
 class VotedOnApiHandler(cyclone.web.RequestHandler):
     def get(self):

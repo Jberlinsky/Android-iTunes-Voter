@@ -72,7 +72,7 @@ class VoteHandler(cyclone.web.RequestHandler):
                 self.get_argument("song_list")).encode('ascii', 'ignore')
         if sid is not '':
             for song in songs:
-                if song.id == sid:
+                if int(song.id) == int(sid):
                     song.votes += 1
                     self.write(song.votes)
 

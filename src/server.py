@@ -65,23 +65,13 @@ class VoteHandler(cyclone.web.RequestHandler):
         self.render("vote.html", songs=songs)
 
     def post(self):
-        slist = unicodedata.normalize('NFKD',
+        sid = unicodedata.normalize('NFKD',
                 self.get_argument("song_list")).encode('ascii', 'ignore')
-        song_ids = slist.split(",")
-        for sid in song_ids:
-            if sid is not '':
-                for song in songs:
-                    if song.id == sid:
-                        song.votes += 1
+        if sid is not '':
+            for song in songs:
+                if song.id == sid:
+                    song.votes += 1
         self.render("vote.html", songs=songs)
-
-        """
-        song_ids = self.get_argument("song_ids")
-        print song_ids
-        for sid in song_ids:
-            song_votes[sid] += 1
-        self.render("post_vote_message.html")
-        """
 
 class VotedOnApiHandler(cyclone.web.RequestHandler):
     def get(self):

@@ -92,6 +92,7 @@ class Song:
         self.votes = votes
         self.playing = False
         self.obj = obj
+        self.id = id
 
     def play(self):
         self.obj.play()

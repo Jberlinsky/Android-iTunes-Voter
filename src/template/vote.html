@@ -1,0 +1,27 @@
+<html>
+	<head>
+		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
+			<script type="text/javascript">
+				function updateSongs() {
+					$("#song_list").val("");
+					$.each($("input:checked"), function(idx, elt){
+						$("#song_list").val($("#song_list").val() + "," + $(elt).val());
+					});
+					$("#song_list").val($("#song_list").val().substr(1,$("#song_list").val().length));
+				}
+			</script>
+		</head>
+		<body>
+	<form action="/vote" method="post">
+		<input type="hidden" name="song_list" id="song_list" value="" />
+		<ul>
+			{% for song in songs %}
+				{% block song %}
+				<li><input type="checkbox" name="sdf" class="song_selector" value="{{song.id}}" onclick="updateSongs();" />{{ song.name }} - {{song.votes}}</li>
+				{% end %}
+			{% end %}
+		</ul>
+		<input type="submit" name="submit" value="Vote!" />
+	</form>
+</body>
+</html>

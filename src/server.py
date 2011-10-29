@@ -11,7 +11,10 @@ import struct
 import json
 from json import JSONEncoder
 import select
-import pybonjour
+import urllib
+from lxml import etree
+
+COVER_ART_URL = "http://www.freecovers.net/api/search/%s %s"
 
 def song_with_most_votes(songs):
     max_song = None
@@ -97,6 +100,12 @@ class Song:
     def play(self):
         self.obj.play()
 
+    def imgurl():
+        # Lazy load from an API
+        url = COVER_ART_URL % (self.album, self.name)
+        tree = etree.parse(urllib.urlopen(url))
+        return tree.xpath("/rsp/title/covers/cover[type='front']/url")[0].text
+
     def __repr__(self):
         dictionary = {}
         dictionary['name'] = self.name
@@ -105,6 +114,7 @@ class Song:
         dictionary['artist'] = self.artist
         dictionary['votes'] = self.votes
         dictionary['playing'] = self.playing
+        dictionary['url'] = self.imgurl()
         return json.dumps(dictionary)
 
 class Application(cyclone.web.Application):
@@ -123,17 +133,7 @@ class Application(cyclone.web.Application):
 
         cyclone.web.Application.__init__(self, handlers, **settings)
 
-def register_callback(sdRef, flags, errorCode, name, regtype, domain):
-    if errorCode == pybonjour.kDNSServiceErr_NoError:
-        print "Successfully registered as a Bonjour service!"
-
 if __name__ == "__main__":
-    # Register as a Bonjour service
-    sdRef = pybonjour.DNSServiceRegister(name="",
-                                        regtype="_test._tcp",
-                                        port=1092,
-                                        callBack=register_callback)
-
     itunes = app('itunes')
 
     r = redis.StrictRedis(host='localhost', port=6379, db=0)

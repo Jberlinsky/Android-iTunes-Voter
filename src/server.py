@@ -49,7 +49,7 @@ def play(song):
     t = threading.Timer(song.track_length, function=new_song)
     t.daemon = True
     t.start()
-    reset_votes(songs)
+    song.votes = 0
 
 def songs_with_votes(songs):
     results = []

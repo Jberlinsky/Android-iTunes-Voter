@@ -53,7 +53,7 @@ def new_song():
 
 def find_song_by_id(song_id):
     for song in songs:
-        if song.id == song_id:
+        if song.sid == song_id:
             return song
     return None
 
@@ -91,7 +91,7 @@ class VoteHandler(cyclone.web.RequestHandler):
                 self.get_argument("song_list")).encode('ascii', 'ignore')
         if sid is not '':
             for song in songs:
-                if song.id == int(sid):
+                if song.sid == int(sid):
                     song.votes += 1
                     self.write(str(song.votes))
                     wrote = True

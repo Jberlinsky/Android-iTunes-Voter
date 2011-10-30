@@ -14,6 +14,7 @@ import select
 import urllib
 import threading
 import random
+import simplejson
 #from lxml import etree
 
 COVER_ART_URL = "http://www.freecovers.net/api/search/%s %s"
@@ -100,15 +101,15 @@ class VoteHandler(cyclone.web.RequestHandler):
 class VotedOnApiHandler(cyclone.web.RequestHandler):
     def get(self):
         s = songs_with_votes(songs)
-        self.write(SongJSONEncoder().encode(s))
+        self.write(simplejson.dumps([song.dump() for song in s]))
 
 class SongsApiHandler(cyclone.web.RequestHandler):
     def get(self):
-        self.write(SongJSONEncoder().encode(songs))
+        self.write(simplejson.dumps([song.dump() for song in songs]))
 
 class NowPlayingApiHandler(cyclone.web.RequestHandler):
     def get(self):
-        self.write(SongJSONEncoder().encode([currently_playing_song]))
+        self.write(simplejson.dumps([currently_playing_song.dump()]))
 
 class Song:
     def __init__(self, track_length=0, sid=0, name="",
@@ -132,11 +133,18 @@ class Song:
         return "http://placehold.it/50x50"
 # tree.xpath("/rsp/title/covers/cover[type='front']/url")[0].text
 
+    def dump(self):
+        dictionary = {}
+        dictionary['votes'] = self.votes
+        dictionary['playing'] = self.playing
+        dictionary['song_id'] = self.sid
+        return dictionary
+
     def __repr__(self):
         dictionary = {}
         dictionary['votes'] = self.votes
         dictionary['playing'] = self.playing
-        dictionary['song_id'] = self.id
+        dictionary['song_id'] = self.sid
         return json.dumps(dictionary)
 
 class Application(cyclone.web.Application):

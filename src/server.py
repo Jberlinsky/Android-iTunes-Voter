@@ -99,8 +99,8 @@ class VoteHandler(cyclone.web.RequestHandler):
 
 class VotedOnApiHandler(cyclone.web.RequestHandler):
     def get(self):
-        s = songs_with_votes(songs)
-        self.write(json.dumps(SongJSONEncoder().encode(s)))
+        s = songs_with_votes()
+        self.write(SongJSONEncoder().encode(s))
 
 class SongsApiHandler(cyclone.web.RequestHandler):
     def get(self):

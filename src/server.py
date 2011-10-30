@@ -12,6 +12,7 @@ import json
 from json import JSONEncoder
 import select
 import urllib
+import threading
 #from lxml import etree
 
 COVER_ART_URL = "http://www.freecovers.net/api/search/%s %s"
@@ -32,6 +33,7 @@ def reset_votes(songs):
 def new_song():
     print "Time for a new song!"
     song = song_with_most_votes(songs)
+    print "Playing", song.name
     play(song)
 
 def find_song_by_id(song_id):
@@ -43,7 +45,8 @@ def find_song_by_id(song_id):
 def play(song):
     song.playing = True
     # Set a counter to fire after the duration.
-    t = threading.Timer(song.duration, function=new_song)
+    song.play()
+    t = threading.Timer(song.track_length, function=new_song)
     t.daemon = True
     t.start()
     reset_votes(songs)
@@ -113,13 +116,9 @@ class Song:
 
     def __repr__(self):
         dictionary = {}
-        dictionary['name'] = self.name
-        dictionary['track_length'] = self.track_length
-        dictionary['album'] = self.album
-        dictionary['artist'] = self.artist
         dictionary['votes'] = self.votes
         dictionary['playing'] = self.playing
-        dictionary['url'] = self.imgurl()
+        dictionary['song_id'] = self.id
         return json.dumps(dictionary)
 
 class Application(cyclone.web.Application):
@@ -150,6 +149,7 @@ if __name__ == "__main__":
         songs.append(Song(track_length=song.duration(), id=song.id(), album=song.album(),
             artist=song.artist(), name=song.name(), obj=song))
     log.startLogging(sys.stdout)
+    new_song()
     reactor.listenTCP(8888, Application())
     reactor.run()
 

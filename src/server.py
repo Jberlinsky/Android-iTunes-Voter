@@ -17,6 +17,12 @@ import threading
 
 COVER_ART_URL = "http://www.freecovers.net/api/search/%s %s"
 
+def currently_playing_song(songs):
+    for song in songs:
+        if song.playing:
+            return song
+    return None
+
 def song_with_most_votes(songs):
     max_song = None
     max_votes = -1
@@ -31,6 +37,9 @@ def reset_votes(songs):
         song.votes = 0
 
 def new_song():
+    song = currently_playing_song(songs)
+    if song is not None:
+        song.playing = False
     print "Time for a new song!"
     song = song_with_most_votes(songs)
     print "Playing", song.name
@@ -92,6 +101,10 @@ class SongsApiHandler(cyclone.web.RequestHandler):
     def get(self):
         self.write(SongJSONEncoder().encode(songs))
 
+class NowPlayingApiHandler(cyclone.web.RequestHandler):
+    def get(self):
+        self.write(SongJSONEncoder().encode([currently_playing_song]))
+
 class Song:
     def __init__(self, track_length=0, id=0, name="",
             album="",artist="",votes=0,playing=False, obj=None):
@@ -127,7 +140,8 @@ class Application(cyclone.web.Application):
                 (r"/", IndexHandler),
                 (r"/vote", VoteHandler),
                 (r"/voted_api", VotedOnApiHandler),
-                (r"/songs_api", SongsApiHandler)
+                (r"/songs_api", SongsApiHandler),
+                (r"/now_playing", NowPlayingApiHandler)
         ]
 
         settings = {

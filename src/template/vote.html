@@ -325,8 +325,8 @@
                     <span class="img" style="display: none; visibility: hidden;">{{ song.imgurl() }}</span>
                     <div class="status">
                         {% if song.playing %}
-                            <span style="font-style: italic">Now playing</span>
                             <span class="votes" style="display: none; visibility: hidden;">{{ song.votes }}</span>
+                            <span>Now playing</span>
                         {% else %}
                             <span class="votes">{{ song.votes }}</span>
                             <span>Votes</span>
@@ -343,7 +343,7 @@
                         <span class="album">{{ song.album }}</span>
                     </div>
                     <span class="o_name">{{ song.name }}</span>
-                    <span class="id">{{ song.id }}</span>
+                    <span class="id">{{ song.sid }}</span>
                 </li>
 				{% end %}
 			{% end %}
@@ -380,7 +380,6 @@
                         });   
                     }
                 }
-                
             }
 
             var views = ["default", "queued",  "songs"];
@@ -434,6 +433,38 @@
                     }
                 });
             });
+
+            
+            setInterval(function() {
+                $.get('/voted_api', function(data) {
+                    console.log(data);
+                    data = eval(data);
+                    console.log(data);
+                    data = eval(data);
+                    console.log(data);
+                    $.each(data, function(idx, el){
+                        console.log(el);
+                        console.log(el['song_id']);
+                       var p = songList.get("id", el.song_id);
+                       console.log(p);
+                        p.values({votes: el.votes});
+                    });
+                });
+            }, 5000);
+
+            var pUp = function(id) {
+                var play = songList.get("playing", "True");
+                var pv = play.values();
+                if (pv.id != id) {
+                    play.values({playing: "False"});
+                    var np = songList.get("id", id);
+                    np.values({playing: "True"});
+                    $(np.elm).children('.status').children('span:last-child').text("Now Playing...");
+                    $(np.elm).children('.status').children('span:first-child').hide();
+                    $(play.elm).children('.status').children('span:last-child').text("Votes");
+                    $(play.elm).children('.status').children('span:first-child').show();
+                }
+            }
 
 			</script>
         </body>

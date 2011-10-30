@@ -437,34 +437,32 @@
             
             setInterval(function() {
                 $.get('/voted_api', function(data) {
-                    console.log(data);
-                    data = eval(data);
-                    console.log(data);
-                    data = eval(data);
-                    console.log(data);
                     $.each(data, function(idx, el){
-                        console.log(el);
-                        console.log(el['song_id']);
                        var p = songList.get("id", el.song_id);
-                       console.log(p);
-                        p.values({votes: el.votes});
+                       p.values({votes: el.votes});
                     });
                 });
-            }, 5000);
+            }, 10000);
 
-            var pUp = function(id) {
-                var play = songList.get("playing", "True");
-                var pv = play.values();
-                if (pv.id != id) {
-                    play.values({playing: "False"});
-                    var np = songList.get("id", id);
-                    np.values({playing: "True"});
-                    $(np.elm).children('.status').children('span:last-child').text("Now Playing...");
-                    $(np.elm).children('.status').children('span:first-child').hide();
-                    $(play.elm).children('.status').children('span:last-child').text("Votes");
-                    $(play.elm).children('.status').children('span:first-child').show();
-                }
-            }
+            setInterval(function() {
+
+                $.get('/now_playing', function(data) {
+                    data = data[0];
+                    var id = data.id;
+                    var play = songList.get("playing", "True");
+                    var pv = play.values();
+                    console.log(pv);
+                    if (pv.id != id) {
+                        play.values({playing: "False"});
+                        var np = songList.get("id", id);
+                        np.values({playing: "True"});
+                        $(np.elm).children('.status').children('span:last-child').text("Now Playing...");
+                        $(np.elm).children('.status').children('span:first-child').hide();
+                        $(play.elm).children('.status').children('span:last-child').text("Votes");
+                        $(play.elm).children('.status').children('span:first-child').show();
+                    }
+                });
+            }, 3000);
 
 			</script>
         </body>

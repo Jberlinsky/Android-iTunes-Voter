@@ -109,7 +109,7 @@ class SongsApiHandler(cyclone.web.RequestHandler):
 
 class NowPlayingApiHandler(cyclone.web.RequestHandler):
     def get(self):
-        self.write(simplejson.dumps([currently_playing_song.dump()]))
+        self.write(simplejson.dumps([currently_playing_song(songs).dump()]))
 
 class Song:
     def __init__(self, track_length=0, sid=0, name="",

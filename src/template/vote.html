@@ -443,23 +443,28 @@
                     });
                 });
             }, 10000);
-
+            
+            var last_playing = null;
+            
             setInterval(function() {
 
                 $.get('/now_playing', function(data) {
-                    data = data[0];
-                    var id = data.id;
-                    var play = songList.get("playing", "True");
-                    var pv = play.values();
-                    console.log(pv);
-                    if (pv.id != id) {
-                        play.values({playing: "False"});
-                        var np = songList.get("id", id);
-                        np.values({playing: "True"});
-                        $(np.elm).children('.status').children('span:last-child').text("Now Playing...");
-                        $(np.elm).children('.status').children('span:first-child').hide();
-                        $(play.elm).children('.status').children('span:last-child').text("Votes");
-                        $(play.elm).children('.status').children('span:first-child').show();
+                    data = eval(data);
+                    var id = data[0].song_id;
+                    if (last_playing == null) {
+                        last_playing = id;
+                        var p = songList.get("id", last_playing);
+                        $(p.elm).children('.status').children('span:first-child').hide().next().text("Now Playing");
+                        p.values({"playing": "True"});
+                    }
+                    else if (id != last_playing) {
+                        var p = songList.get("id", last_playing);
+                        p.values({"playing": "False"});
+                        $(p.elm).children('.status').children('span:first-child').show().next().text("Votes");
+                        last_playing = id;
+                        p = songList.get("id", last_playing);
+                        p.values({"playing": "True"});
+                        $(p.elm).children('.status').children('span:first-child').hide().next().text("Now Playing");
                     }
                 });
             }, 3000);

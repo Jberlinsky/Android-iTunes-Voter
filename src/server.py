@@ -99,7 +99,7 @@ class VoteHandler(cyclone.web.RequestHandler):
 
 class VotedOnApiHandler(cyclone.web.RequestHandler):
     def get(self):
-        s = songs_with_votes()
+        s = songs_with_votes(songs)
         self.write(SongJSONEncoder().encode(s))
 
 class SongsApiHandler(cyclone.web.RequestHandler):
@@ -111,7 +111,7 @@ class NowPlayingApiHandler(cyclone.web.RequestHandler):
         self.write(SongJSONEncoder().encode([currently_playing_song]))
 
 class Song:
-    def __init__(self, track_length=0, id=0, name="",
+    def __init__(self, track_length=0, sid=0, name="",
             album="",artist="",votes=0,playing=False, obj=None):
         self.track_length = track_length
         self.name = name
@@ -120,7 +120,7 @@ class Song:
         self.votes = votes
         self.playing = False
         self.obj = obj
-        self.id = id
+        self.sid = sid
 
     def play(self):
         self.obj.play()
@@ -165,7 +165,7 @@ if __name__ == "__main__":
     songs = []
     tmp_songs = itunes.tracks()
     for song in tmp_songs:
-        songs.append(Song(track_length=song.duration(), id=song.id(), album=song.album(),
+        songs.append(Song(track_length=song.duration(), sid=song.id(), album=song.album(),
             artist=song.artist(), name=song.name(), obj=song))
     log.startLogging(sys.stdout)
     new_song()

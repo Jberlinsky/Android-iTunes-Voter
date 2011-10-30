@@ -1,5 +1,7 @@
 <html>
 	<head>
+    <meta name="viewport" content="width=100%; initial-scale=1; maximum-scale=1; minimum-scale=1; user-scalable=no;" />
+
 		<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js"></script>
 		<script type="text/javascript" src="https://raw.github.com/jyoungblood/smoke.js/master/smoke/smoke.min.js"></script>
         <link href="https://raw.github.com/jyoungblood/smoke.js/master/base.css" rel="stylesheet" type="text/css" />
@@ -53,7 +55,7 @@
                 font-family: sans-serif;
                 font-weight: bold;
                 text-align: center;
-                font-size: 30px;
+                font-size: 18px;
                 line-height: 130%;
             }
 
@@ -135,7 +137,7 @@
             position: relative;    
         }
         .center{
-            width: 402px;
+            width: 100%;
             margin: 0 auto;
         } 
         ul {
@@ -152,14 +154,14 @@
             background: linear-gradient(top, #68707e 0%,#363b42 100%); /* W3C */
             background: -moz-linear-gradient(top, #68707e 0%,#363b42 100%); /* W3C */
             height: 60px;
-            width: 400px;
+            width: 100%;
             position: relative;
             border-bottom: 1px solid #1a1b1f;
         }
         li:before {
             border-top: 1px solid #b5b9c0;
-            height: 499px;
-            width: 400px;
+            height: 1px;
+            width: 100%;
             position: absolute;
             top: 1px;
             left: 0px;
@@ -213,9 +215,9 @@
 
             .button {
                 text-align: center;
-                height: 15px;
+                height: 40px;
+                line-height: 40px;
                 margin: 5px auto;
-                padding: 5px 5px;
                 border: 1px solid #444;
                 border-radius: 5px;
                 -moz-border-radius: 5px;
@@ -250,29 +252,32 @@
                 font-size: 18px;
                 height: 36px;
                 line-height: 36px;
-                padding: 2px 5px;
-                width: 400px;
+                padding: 2px 2%;
+                margin: 10px 0;
+                width: 98%;
             }
             #nav {
+                width: 102%;
                 position: fixed;
                 z-index: 10;
                 top: 0px;
+                left: -3px;
                 background: #1a1b1f;
                 padding-bottom: 5px;
             }
             .list {
-                margin-top: 130px;
+                margin-top: 200px;
             }
             .sort-by {
                 margin-top: 10px;
-
+                margin-left: 0;
+                padding-left: 0;
             }
             .sort {
-                width: 100px;
-                height: 15px;
-                line-height: 15px;
-                padding: 5px;
-                margin: 0 10px 10px 0;
+                width: 25%;
+                height: auto;
+                padding: 10px 5px;
+                margin: 0 3% 10px 0;
                 text-align: center;
                 float: left;
                 background: -moz-linear-gradient(top, #5b5c5e 0%, #2d2f38 100%); /* FF3.6+ */
@@ -310,7 +315,7 @@
                     </li>
                 </ul>
                 <input class="search" placeholder="Search for your song..." />
-                <div class="button" style="width: 385px;">View Queued</div>
+                <div class="button" style="width: auto">View Queued</div>
             </div>
             <ul class="list">
 			{% for song in songs %}
@@ -329,8 +334,8 @@
                         <span class="playing" style="display: none; visiblility:hidden;">{{ song.playing }}</span>
                     </div>
                     <div class="info">
-                        {% if len(song.name) > 35 %}
-                            <span class="name" >{{ song.name[0:32] }}...</span>
+                        {% if len(song.name) > 20 %}
+                            <span class="name" >{{ song.name[0:17] }}...</span>
                         {% else %}
                             <span class="name">{{ song.name }}</span>
                         {% end %}
@@ -388,7 +393,7 @@
                             return true;    
                         }
                         return false;
-                    });   
+                    });
                 }
                 if (val == views[2]) {
                     songList.filter(function(vals){
@@ -402,14 +407,15 @@
             $('.button').click(function(el) {
                 var $but = $(this);
                 var txt = $but.text();
-                console.log('logged');
                 if (txt == "View Queued") {
                     view.val(views[1]);
                     $but.text("View Songs");
+                    $('.sort-by').hide();
                 }
                 if (txt == "View Songs") {
                     view.val(views[2]);    
                     $but.text("View Queued");
+                    $('.sort-by').show();
                 }
             });
     

@@ -15,9 +15,10 @@ import urllib
 import threading
 import random
 import simplejson
-#from lxml import etree
+from lxml import etree
+import base64
 
-COVER_ART_URL = "http://www.freecovers.net/api/search/%s %s"
+COVER_ART_URL = "http://www.freecovers.net/api/search/%s"
 
 def currently_playing_song(songs):
     for song in songs:
@@ -122,16 +123,23 @@ class Song:
         self.playing = False
         self.obj = obj
         self.sid = sid
+        self.image_base64 = ""
 
     def play(self):
         self.obj.play()
 
-    def imgurl(self):
-        # Lazy load from an API
-        url = COVER_ART_URL % (self.album, self.name)
-        #tree = etree.parse(urllib.urlopen(url))
-        return "http://placehold.it/50x50"
-# tree.xpath("/rsp/title/covers/cover[type='front']/url")[0].text
+    def image_data(self):
+        if self.image_base64 is not "":
+            return self.image_base64
+        else:
+            self.image_base64 = self.imgdata()
+            return self.image_base64
+
+    def imgdata(self):
+        if len(self.obj.artworks()) > 0:
+            return base64.b64encode(self.obj.artworks()[0].data_.get().data)
+        else:
+            return ""
 
     def dump(self):
         dictionary = {}

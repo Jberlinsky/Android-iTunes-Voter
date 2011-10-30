@@ -29,7 +29,7 @@ public class voter extends Activity {
 			webview = new WebView(this);
 			setContentView(webview);
 
-			webview.loadUrl("http://192.168.1.126:8888/vote");
+			webview.loadUrl("http://141.212.236.105:8888/vote");
 			webview.getSettings().setJavaScriptEnabled(true);
 			webview.setVerticalScrollBarEnabled(false);
 			webview.setHorizontalScrollBarEnabled(false);

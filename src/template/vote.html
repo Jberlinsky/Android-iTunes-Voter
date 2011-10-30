@@ -321,8 +321,8 @@
 			{% for song in songs %}
 				{% block song %}
 				<li>
-                    <img src="{{ song.imgurl() }}" height="50" width="50" />
-                    <span class="img" style="display: none; visibility: hidden;">{{ song.imgurl() }}</span>
+                    <img src="data:image/jpeg;base64,{{ song.image_data() }}" height="50" width="50" />
+                    <span class="img" style="display: none; visibility: hidden;"></span>
                     <div class="status">
                         {% if song.playing %}
                             <span class="votes" style="display: none; visibility: hidden;">{{ song.votes }}</span>

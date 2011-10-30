@@ -13,6 +13,7 @@ from json import JSONEncoder
 import select
 import urllib
 import threading
+import random
 #from lxml import etree
 
 COVER_ART_URL = "http://www.freecovers.net/api/search/%s %s"
@@ -25,11 +26,15 @@ def currently_playing_song(songs):
 
 def song_with_most_votes(songs):
     max_song = None
-    max_votes = -1
+    max_votes = 0
+    chosen = False
     for song in songs:
         if song.votes > max_votes:
             max_song = song
             max_votes = song.votes
+            chosen = True
+    if not chosen:
+        max_song = random.choice(songs)
     return max_song
 
 def reset_votes(songs):

@@ -2,10 +2,6 @@ package com.jackandjason;
 
 import java.io.IOException;
 
-import javax.jmdns.JmDNS;
-import javax.jmdns.ServiceEvent;
-import javax.jmdns.ServiceListener;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,7 +11,6 @@ import android.widget.TextView;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.view.KeyEvent;
-import javax.jmdns.ServiceInfo;
 
 public class voter extends Activity {
     /** Called when the activity is first created. */
@@ -34,8 +29,10 @@ public class voter extends Activity {
 			webview = new WebView(this);
 			setContentView(webview);
 
-			webview.loadUrl("http://127.0.0.1:8888/");
+			webview.loadUrl("http://141.212.237.39:8888/vote");
 			webview.getSettings().setJavaScriptEnabled(true);
+			webview.setVerticalScrollBarEnabled(false);
+			webview.setHorizontalScrollBarEnabled(false);
 			webview.setWebViewClient(new VoteViewClient());
 		}
 

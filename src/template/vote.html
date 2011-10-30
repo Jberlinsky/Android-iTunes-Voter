@@ -5,6 +5,11 @@
         <link href="https://raw.github.com/jyoungblood/smoke.js/master/base.css" rel="stylesheet" type="text/css" />
             
         <style>
+            html, body {
+                margin: 0;
+                padding: 0;
+            }
+
             .smoke-base {
                 position: fixed;
                 top: 0;
@@ -126,9 +131,6 @@
                 background: #1a1b1f;
             }
 
-        #song_list {
-            display: none;    
-        }
         #default {
             position: relative;    
         }
@@ -138,6 +140,8 @@
         } 
         ul {
             list-style: none;    
+            padding-left: 0px;
+            margin-left: 0px;
         }
         .o_name {
             display: none;    
@@ -209,44 +213,104 @@
 
             .button {
                 text-align: center;
-                width: 200px;
-                height: 25px;
-                margin: 10px auto;
-                padding: 10px 5px 0px;
-                border: 1px solid #666;
+                height: 15px;
+                margin: 5px auto;
+                padding: 5px 5px;
+                border: 1px solid #444;
                 border-radius: 5px;
                 -moz-border-radius: 5px;
                 -webkit-border-radius: 5px;
-                background: -moz-linear-gradient(top, #606c88 0%, #3f4c6b 100%); /* FF3.6+ */
-                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#606c88), color-stop(100%,#3f4c6b)); /* Chrome,Safari4+ */
-                background: -webkit-linear-gradient(top, #606c88 0%,#3f4c6b 100%); /* Chrome10+,Safari5.1+ */
-                background: linear-gradient(top, #606c88 0%,#3f4c6b 100%); /* W3C */
+                background: -moz-linear-gradient(top, #5b5c5e 0%, #2d2f38 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5b5c5e), color-stop(100%,#2d2f38)); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top, #5b5c5e 0%,#2d2f38 100%); /* Chrome10+,Safari5.1+ */
+                background: linear-gradient(top, #5b5c5e 0%,#2d2f38 100%); /* W3C */
                 -webkit-box-shadow: 0px 0px 3px 0px #000000;
                 -moz-box-shadow: 0px 0px 3px 0px #000000;
                 box-shadow: 0px 0px 3px 0px #000000; 
             }
             
             .button:active {
-                background: -moz-linear-gradient(top, #37435e 0%, #515b72 100%); /* FF3.6+ */
-                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#37435e), color-stop(100%,#515b72)); /* Chrome,Safari4+ */
-                background: -webkit-linear-gradient(top, #37435e 0%,#515b72 100%); /* Chrome10+,Safari5.1+ */
-                background: linear-gradient(top, #37435e 0%,#515b72 100%); /* W3C */
+                background: -moz-linear-gradient(top, #2d2f38 0%, #5b5c5e 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2d2f38), color-stop(100%,#5b5c5e)); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top, #2d2f38 0%,#5b5c5e 100%); /* Chrome10+,Safari5.1+ */
+                background: linear-gradient(top, #2d2f38 0%,#5b5c5e 100%); /* W3C */
                 -webkit-box-shadow: 0px 0px 0px 0px #000000;
                 -moz-box-shadow: 0px 0px 0px 0px #000000;
                 box-shadow: 0px 0px 0px 0px #000000; 
             }
 
+            .btn {
+                border: 1px solid #444;
+                border-radius: 5px;
+                background: #2a2b2f;
+            }
+            .search {
+                border: 1px solid #666;
+                border-radius: 5px;
+                font-size: 18px;
+                height: 36px;
+                line-height: 36px;
+                padding: 2px 5px;
+                width: 400px;
+            }
+            #nav {
+                position: fixed;
+                z-index: 10;
+                top: 0px;
+                background: #1a1b1f;
+                padding-bottom: 5px;
+            }
+            .list {
+                margin-top: 130px;
+            }
+            .sort-by {
+                margin-top: 10px;
+
+            }
+            .sort {
+                width: 100px;
+                height: 15px;
+                line-height: 15px;
+                padding: 5px;
+                margin: 0 10px 10px 0;
+                text-align: center;
+                float: left;
+                background: -moz-linear-gradient(top, #5b5c5e 0%, #2d2f38 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#5b5c5e), color-stop(100%,#2d2f38)); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top, #5b5c5e 0%,#2d2f38 100%); /* Chrome10+,Safari5.1+ */
+                background: linear-gradient(top, #5b5c5e 0%,#2d2f38 100%); /* W3C */
+            }
+
+            .sort:active {
+                background: -moz-linear-gradient(top, #2d2f38 0%, #5b5c5e 100%); /* FF3.6+ */
+                background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#2d2f38), color-stop(100%,#5b5c5e)); /* Chrome,Safari4+ */
+                background: -webkit-linear-gradient(top, #2d2f38 0%,#5b5c5e 100%); /* Chrome10+,Safari5.1+ */
+                background: linear-gradient(top, #2d2f38 0%,#5b5c5e 100%); /* W3C */
+            }
+
+            .sort:before {
+                border: none !important;
+                height: 0;
+                width: 0;
+            }
             </style>
 		</head>
 		<body>
-            <div class="center" id="default">
-                <div class="button">Queued</div>
-                <div class="button">Songs</div>
-            </div>
-            
             <div id="song_list" class="center">
-            <div>
+            <div id="nav">
+                <ul class="sort-by">
+                    <li class="sort btn" rel="name">
+                        Sort by name
+                    </li>
+                    <li class="sort btn" rel="artist">
+                        Sort by artist
+                    </li>
+                    <li class="sort btn" rel="album">
+                        Sort by album
+                    </li>
+                </ul>
                 <input class="search" placeholder="Search for your song..." />
+                <div class="button" style="width: 385px;">View Queued</div>
             </div>
             <ul class="list">
 			{% for song in songs %}
@@ -336,25 +400,21 @@
                     
              
             $('.button').click(function(el) {
-                $('#default').animate({
-                    left: "500px",
-                    opacity: "0"
-                }, "slow");
-                $('#default').hide("slow");
                 var $but = $(this);
                 var txt = $but.text();
-                if (txt == "Queued") {
+                console.log('logged');
+                if (txt == "View Queued") {
                     view.val(views[1]);
+                    $but.text("View Songs");
                 }
-                if (txt == "Songs") {
+                if (txt == "View Songs") {
                     view.val(views[2]);    
+                    $but.text("View Queued");
                 }
-                
-                $('#song_list').fadeIn();
             });
     
 
-            $('li').click(function() {
+            $('#song_list .list li').click(function() {
                 var $t = $(this);
                 var n = $t.children('.o_name').text();
                 var id = $t.children('.id').text();

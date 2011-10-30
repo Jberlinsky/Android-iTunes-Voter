@@ -15,7 +15,6 @@ import urllib
 import threading
 import random
 import simplejson
-from lxml import etree
 import base64
 
 COVER_ART_URL = "http://www.freecovers.net/api/search/%s"
